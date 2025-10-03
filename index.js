@@ -14,19 +14,18 @@ export default {
 
     // Only check for language preference on the root URL path
     if (url.pathname === "/") {
-      // Get the browser's language preference
-      const lowerAcceptLang = acceptLang.toLowerCase();
-      // If the user's language includes Japanese, redirect to /ja/
-      if (lowerAcceptLang.includes('ja')) {
-        return new Response(null, {
-          status: 302,
-          headers: {
-            'Location': '/ja/',
-            'Set-Cookie': 'lang_redirected=1; Max-Age=86400; Path=/'
-          }
-        });
+const primaryLang = acceptLang.split(',')[0].toLowerCase();
+// If the user's main language is Japanese, redirect to /ja/
+if (primaryLang.startsWith('ja')) {
+return new Response(null, {
+      status: 302,
+      headers: {
+        'Location': '/ja/',
+        'Set-Cookie': 'lang_redirected=1; Max-Age=86400; Path=/'
       }
-    }
+    });
+  }
+}
 
     // All other cases: serve the page as usual
     return fetch(request);

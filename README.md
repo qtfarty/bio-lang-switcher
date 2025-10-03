@@ -23,7 +23,6 @@ worker-lang-redirector/
 ├── wrangler.toml      # Cloudflare Setting File
 ├── README.md          # About This Repo
 
-
 ## License
 
 MIT

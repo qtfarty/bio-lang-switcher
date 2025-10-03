@@ -1,26 +1,32 @@
 export default {
     async fetch(request, env, ctx) {
-    const url = new URL(request.url);
-    const cookie = request.headers.get('Cookie') || '';
-    // If you already have a redirected cookie, do nothing
-    if (cookie.includes('lang_redirected=1')) {
-    return fetch(request);
+      const url = new URL(request.url);
+      const cookies = request.headers.get('Cookie') || '';
+      const acceptLang = request.headers.get('Accept-Language') || '';
+  
+      // If the user has already been redirected, proceed normally
+      if (cookies.includes('lang_redirected=1')) {
+        return fetch(request);
+      }
+  
+      // Only check for language preference on the root URL path
+      if (url.pathname === "/") {
+        // Get the browser's top preference language
+        const primaryLang = acceptLang.split(',')[0].toLowerCase();
+        // If the user's main language is Japanese, redirect to /ja/
+        if (primaryLang.startsWith('ja')) {
+          return new Response(null, {
+            status: 302,
+            headers: {
+              'Location': '/ja/',
+              'Set-Cookie': 'lang_redirected=1; Max-Age=86400; Path=/'
+            }
+          });
+        }
+      }
+  
+      // All other cases: serve the page as usual
+      return fetch(request);
     }
-    
-    const acceptLang = request.headers.get('Accept-Language') || '';
-    if (acceptLang.toLowerCase().startsWith('ja') && url.pathname === "/") {
-    // When detected as Japanese, redirect to the Japanese page and keep the preference for a while. 
-    return new Response(null, {
-    status: 302,
-    headers: {
-    'Location': '/ja/',
-    'Set-Cookie': 'lang_redirected=1; Max-Age=86400; Path=/'
-    }
-    });
-    }
-    
-    // Other than that, normal processing
-    return fetch(request);
-    }
-    }
-    
+  }
+  

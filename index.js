@@ -3,7 +3,10 @@ export default {
       const url = new URL(request.url);
       const cookies = request.headers.get('Cookie') || '';
       const acceptLang = request.headers.get('Accept-Language') || '';
-  
+    
+      // ←ここでAccept-Languageの内容をログ出力
+    console.log("Accept-Language: ", acceptLang);  // ←この一行を追加
+
       // If the user has already been redirected, proceed normally
       if (cookies.includes('lang_redirected=1')) {
         return fetch(request);

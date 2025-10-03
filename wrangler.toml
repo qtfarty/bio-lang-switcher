@@ -1,0 +1,3 @@
+name = "qtfarty-lang-redirector"
+main = "index.js"
+compatibility_date = "2023-10-01"

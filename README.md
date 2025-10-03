@@ -18,6 +18,12 @@ A Cloudflare Worker for automatic language redirection on [qtfarty.omg.lol](http
 
 This Worker is used by the main [qtfarty/bio](https://github.com/qtfarty/bio) repository (the “link in bio” site).
 
+worker-lang-redirector/
+├── index.js           # Worker Script
+├── wrangler.toml      # Cloudflare Setting File
+├── README.md          # About This Repo
+
+
 ## License
 
 MIT
